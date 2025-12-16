@@ -1,0 +1,158 @@
+name: media-stack
+services:
+
+  ## Default credentials of qBittorrent - Username: admin password: adminadmin ##
+  ## Change password after install from UI --> Tools --> Options --> WebUI ##
+
+  flaresolverr:
+    # DockerHub mirror flaresolverr/flaresolverr:latest
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_HTML=${LOG_HTML:-false}
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+      - TZ=Europe/London
+    ports:
+      - "${PORT:-8191}:8191"
+    restart: unless-stopped
+    networks:               
+      - mynetwork
+
+  qbittorrent:
+    container_name: qbittorrent
+    image: lscr.io/linuxserver/qbittorrent:latest
+    networks:               
+      - mynetwork           
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+      - WEBUI_PORT=5080
+    volumes:
+      - qbittorrent-config:/config
+      - windows-library:/downloads
+    ports:
+      - 5080:5080
+      - 6881:6881
+      - 6881:6881/udp
+    restart: "unless-stopped"
+
+  radarr:
+    container_name: radarr
+    image: lscr.io/linuxserver/radarr:latest
+    networks:
+      - mynetwork   
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+    ports:
+      - 7878:7878
+    volumes:
+      - radarr-config:/config
+      - windows-library:/downloads
+    restart: "unless-stopped"
+
+  sonarr:
+    image: linuxserver/sonarr:latest
+    container_name: sonarr
+    networks:
+      - mynetwork   
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+    volumes:
+      - sonarr-config:/config
+      - windows-library:/downloads
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+
+  prowlarr:
+    container_name: prowlarr
+    image: linuxserver/prowlarr:latest
+    networks:               
+      - mynetwork           
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+    volumes:
+      - prowlarr-config:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    networks:
+      - mynetwork
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+    volumes:
+      - jellyseerr-config:/app/config
+    ports:
+      - 5055:5055
+    restart: unless-stopped
+
+  jellyfin:
+    image: linuxserver/jellyfin:latest
+    container_name: jellyfin
+    networks:
+      - mynetwork
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+    volumes:
+      - jellyfin-config:/config
+      - windows-torrent-downloads:/torrent-downloads
+      - windows-library:/library
+  # devices:
+   #  - /dev/videoN:/dev/videoN # Mount GPU device 
+    ports:
+      - 0.0.0.0:8096:8096
+      - 0.0.0.0:7359:7359/udp
+      - 0.0.0.0:8920:8920
+    restart: unless-stopped
+  #https://github.com/serzhshakur/sanitarr
+  sanitarr:
+    image: sanitarr:latest
+    container_name: sanitarr
+    networks:
+      - mynetwork
+    environment:
+      LOG_LEVEL: debug
+      INTERVAL: 1h
+    volumes:
+      - ./config/sanitarr-config.toml:/app/config.toml
+    command:
+      - "--config"
+      - "/app/config.toml"
+      - "--force-delete"
+    depends_on:
+      - jellyfin
+      - sonarr
+      - radarr
+      - qbittorrent
+
+volumes:
+  radarr-config:
+  sonarr-config:
+  prowlarr-config:
+  jellyfin-config:
+  qbittorrent-config:
+  jellyseerr-config:
+  windows-torrent-downloads:
+    external: true
+  windows-library:
+    external: true
+
+networks:
+  mynetwork:
+    external: true
