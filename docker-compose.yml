@@ -27,7 +27,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=UTC
+      - TZ=Europe/Ljubljana
       - WEBUI_PORT=5080
     volumes:
       - qbittorrent-config:/config
@@ -46,7 +46,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=UTC
+      - TZ=Europe/Ljubljana
     ports:
       - 7878:7878
     volumes:
@@ -62,7 +62,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=UTC
+      - TZ=Europe/Ljubljana
     volumes:
       - sonarr-config:/config
       - windows-library:/downloads
@@ -78,7 +78,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=UTC
+      - TZ=Europe/Ljubljana
     volumes:
       - prowlarr-config:/config
     ports:
@@ -93,7 +93,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=UTC
+      - TZ=Europe/Ljubljana
     volumes:
       - jellyseerr-config:/app/config
     ports:
@@ -108,7 +108,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=UTC
+      - TZ=Europe/Ljubljana
     volumes:
       - jellyfin-config:/config
       - windows-torrent-downloads:/torrent-downloads
