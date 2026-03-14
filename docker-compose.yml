@@ -86,19 +86,28 @@ services:
     restart: unless-stopped
 
   jellyseerr:
-    image: fallenbagel/jellyseerr:latest
+    image: ghcr.io/seerr-team/seerr:latest
+    init: true
     container_name: jellyseerr
+    user: "1000:1000"
     networks:
       - mynetwork
     environment:
       - PUID=1000
       - PGID=1000
+      - LOG_LEVEL=debug
       - TZ=Europe/Ljubljana
     volumes:
       - jellyseerr-config:/app/config
     ports:
       - 5055:5055
     restart: unless-stopped
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://127.0.0.1:5055/api/v1/status || exit 1
+      start_period: 20s
+      timeout: 3s
+      interval: 15s
+      retries: 3
 
   jellyfin:
     image: linuxserver/jellyfin:10.11.6
