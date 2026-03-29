@@ -130,20 +130,24 @@ services:
       - 0.0.0.0:8920:8920
     restart: unless-stopped
   #https://github.com/serzhshakur/sanitarr
-  sanitarr:
-    image: sanitarr:latest
-    container_name: sanitarr
-    networks:
-      - mynetwork
-    environment:
-      LOG_LEVEL: debug
-      INTERVAL: 1h
+
+  cleanuparr:
+    image: ghcr.io/cleanuparr/cleanuparr:latest
+    container_name: cleanuparr
+    restart: unless-stopped
+    ports:
+      - "11011:11011"
     volumes:
-      - ./config/sanitarr-config.toml:/app/config.toml
-    command:
-      - "--config"
-      - "/app/config.toml"
-      - "--force-delete"
+      - cleanuparr-config:/config
+    environment:
+      - PORT=11011
+      - BASE_PATH=
+      - PUID=1000
+      - PGID=1000
+      - UMASK=022
+      - TZ=Etc/UTC
+    networks: 
+      - mynetwork
     depends_on:
       - jellyfin
       - sonarr
@@ -157,6 +161,7 @@ volumes:
   jellyfin-config:
   qbittorrent-config:
   jellyseerr-config:
+  cleanuparr-config:
   windows-torrent-downloads:
     external: true
   windows-library:
