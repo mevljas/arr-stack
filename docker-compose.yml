@@ -110,7 +110,7 @@ services:
       retries: 3
 
   jellyfin:
-    image: linuxserver/jellyfin:10.11.6
+    image: linuxserver/jellyfin:10.11.8
     container_name: jellyfin
     networks:
       - mynetwork
@@ -131,28 +131,6 @@ services:
     restart: unless-stopped
   #https://github.com/serzhshakur/sanitarr
 
-  cleanuparr:
-    image: ghcr.io/cleanuparr/cleanuparr:latest
-    container_name: cleanuparr
-    restart: unless-stopped
-    ports:
-      - "11011:11011"
-    volumes:
-      - cleanuparr-config:/config
-    environment:
-      - PORT=11011
-      - BASE_PATH=
-      - PUID=1000
-      - PGID=1000
-      - UMASK=022
-      - TZ=Etc/UTC
-    networks: 
-      - mynetwork
-    depends_on:
-      - jellyfin
-      - sonarr
-      - radarr
-      - qbittorrent
 
 volumes:
   radarr-config:
@@ -161,7 +139,6 @@ volumes:
   jellyfin-config:
   qbittorrent-config:
   jellyseerr-config:
-  cleanuparr-config:
   windows-torrent-downloads:
     external: true
   windows-library:
