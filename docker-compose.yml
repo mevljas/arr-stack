@@ -86,7 +86,7 @@ services:
     restart: unless-stopped
 
   jellyseerr:
-    image: ghcr.io/seerr-team/seerr:latest
+    image: ghcr.io/seerr-team/seerr:v3.2
     init: true
     container_name: jellyseerr
     user: "1000:1000"
@@ -110,7 +110,7 @@ services:
       retries: 3
 
   jellyfin:
-    image: linuxserver/jellyfin:10.11.8
+    image: linuxserver/jellyfin:10.11.9
     container_name: jellyfin
     networks:
       - mynetwork
