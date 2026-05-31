@@ -21,7 +21,7 @@ services:
 
   qbittorrent:
     container_name: qbittorrent
-    image: lscr.io/linuxserver/qbittorrent:5.2.1
+    image: lscr.io/linuxserver/qbittorrent:5.1.4
     networks:               
       - mynetwork           
     environment:
