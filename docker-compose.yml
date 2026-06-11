@@ -40,7 +40,7 @@ services:
 
   radarr:
     container_name: radarr
-    image: lscr.io/linuxserver/radarr:latest
+    image: lscr.io/linuxserver/radarr:6.2.1
     networks:
       - mynetwork   
     environment:
@@ -55,7 +55,7 @@ services:
     restart: "unless-stopped"
 
   sonarr:
-    image: linuxserver/sonarr:latest
+    image: linuxserver/sonarr:4.0.17
     container_name: sonarr
     networks:
       - mynetwork   
@@ -72,7 +72,7 @@ services:
 
   prowlarr:
     container_name: prowlarr
-    image: linuxserver/prowlarr:latest
+    image: linuxserver/prowlarr:2.4.0
     networks:               
       - mynetwork           
     environment:
@@ -110,7 +110,7 @@ services:
       retries: 3
 
   jellyfin:
-    image: linuxserver/jellyfin:10.11.10
+    image: linuxserver/jellyfin:10.11.11
     container_name: jellyfin
     networks:
       - mynetwork
