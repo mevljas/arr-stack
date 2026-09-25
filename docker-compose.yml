@@ -6,7 +6,7 @@ services:
 
   flaresolverr:
     # DockerHub mirror flaresolverr/flaresolverr:latest
-    image: ghcr.io/flaresolverr/flaresolverr:v3.5.0
+    image: ghcr.io/flaresolverr/flaresolverr:v3.5.2
     container_name: flaresolverr
     environment:
       - LOG_LEVEL=${LOG_LEVEL:-info}
@@ -40,7 +40,7 @@ services:
 
   radarr:
     container_name: radarr
-    image: lscr.io/linuxserver/radarr:6.3.0
+    image: lscr.io/linuxserver/radarr:6.4.4
     networks:
       - mynetwork   
     environment:
@@ -55,7 +55,7 @@ services:
     restart: "unless-stopped"
 
   sonarr:
-    image: linuxserver/sonarr:4.0.19
+    image: linuxserver/sonarr:4.0.20
     container_name: sonarr
     networks:
       - mynetwork   
@@ -72,7 +72,7 @@ services:
 
   prowlarr:
     container_name: prowlarr
-    image: linuxserver/prowlarr:2.5.2
+    image: linuxserver/prowlarr:2.6.5
     networks:               
       - mynetwork           
     environment:
@@ -110,7 +110,7 @@ services:
       retries: 3
 
   jellyfin:
-    image: linuxserver/jellyfin:10.11.11
+    image: jellyfin/jellyfin:12.1
     container_name: jellyfin
     networks:
       - mynetwork
@@ -118,6 +118,8 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Ljubljana
+      - JELLYFIN_CONFIG_DIR=/config
+      - JELLYFIN_DATA_DIR=/config/data
     volumes:
       - jellyfin-config:/config
       - windows-torrent-downloads:/torrent-downloads
