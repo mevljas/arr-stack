@@ -21,7 +21,7 @@ services:
 
   qbittorrent:
     container_name: qbittorrent
-    image: lscr.io/linuxserver/qbittorrent:5.2.4
+    image: lscr.io/linuxserver/qbittorrent:5.3.0
     networks:               
       - mynetwork           
     environment:
@@ -86,7 +86,7 @@ services:
     restart: unless-stopped
 
   jellyseerr:
-    image: ghcr.io/seerr-team/seerr:v3.5.0
+    image: ghcr.io/seerr-team/seerr:v3.5.1
     init: true
     container_name: jellyseerr
     user: "1000:1000"
@@ -110,7 +110,7 @@ services:
       retries: 3
 
   jellyfin:
-    image: jellyfin/jellyfin:12.2
+    image: jellyfin/jellyfin:12.4
     container_name: jellyfin
     networks:
       - mynetwork
